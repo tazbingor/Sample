@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template
+from werkzeug.routing import BaseConverter
+
+
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *item):
+        super(RegexConverter, self).__init__()
+
 
 app = Flask(__name__)
 
@@ -21,14 +28,14 @@ def about():
     return 'About'
 
 
-@app.route('/user/<username>')
-def user(username):
+@app.route('/user/<int:user_id>')
+def user(user_id):
     '''
     动态路由演示
     :param username:
     :return:
     '''
-    return 'User %s' % username
+    return 'User %s' % user_id
 
 
 if __name__ == '__main__':
