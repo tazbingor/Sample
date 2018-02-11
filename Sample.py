@@ -21,6 +21,16 @@ def about():
     return 'About'
 
 
+@app.route('/user/<username>')
+def user(username):
+    '''
+    动态路由演示
+    :param username:
+    :return:
+    '''
+    return 'User %s' % username
+
+
 if __name__ == '__main__':
     # app.debug = True
     app.run(debug=True)
