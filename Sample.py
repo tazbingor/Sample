@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response, abort
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 
@@ -23,9 +23,21 @@ app.url_map.converters['regex'] = RegexConverter
 
 
 @app.route('/')
-def hello_world():
-    # return 'Hello World!'
-    return render_template('index.html', title='Sample Blog')
+def index():
+    response = make_response(render_template('index.html', title='Welcome'))
+    response.set_cookie('username', '')
+    return response
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
+# @app.route('/')
+# def hello_world():
+#     # return 'Hello World!'
+#     return render_template('index.html', title='Sample Blog')
 
 
 # @app.route('/user/<int:user_id>')
