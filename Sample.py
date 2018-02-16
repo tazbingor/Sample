@@ -3,7 +3,7 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, abort
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
-
+from flask_script import Manager
 from os import path
 
 
@@ -20,6 +20,7 @@ class RegexConverter(BaseConverter):
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
+manager = Manager(app)
 
 
 @app.route('/')
@@ -101,4 +102,5 @@ def upload():
 
 if __name__ == '__main__':
     # app.debug = True
-    app.run(debug=True)
+    # app.run(debug=True)
+    manager.run()
