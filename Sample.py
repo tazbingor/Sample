@@ -35,6 +35,14 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
+@manager.command
+def dev():
+    from livereload import Server
+    live_server = Server(app.wsgi_app)
+    live_server.watch('**/*.*')
+    live_server.serve(open_url=True)
+
+
 # @app.route('/')
 # def hello_world():
 #     # return 'Hello World!'
