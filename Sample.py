@@ -26,7 +26,7 @@ manager = Manager(app)
 @app.route('/')
 def index():
     response = make_response(render_template('index.html', title='Welcome'))
-    response.set_cookie('username', '')
+    response.set_cookie('username', 'te')
     return response
 
 
@@ -41,6 +41,11 @@ def dev():
     live_server = Server(app.wsgi_app)
     live_server.watch('**/*.*')
     live_server.serve(open_url=True)
+
+
+@app.template_test('current_link')
+def is_current_link(link):
+    return link == request.path
 
 
 # @app.route('/')
@@ -111,4 +116,5 @@ def upload():
 if __name__ == '__main__':
     # app.debug = True
     # app.run(debug=True)
-    manager.run()
+    # manager.run()
+    dev()
