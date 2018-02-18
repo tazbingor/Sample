@@ -19,6 +19,17 @@ def markdown_to_html(txt):
     return markdown(txt)
 
 
+def read_md(filename):
+    with open(filename) as md_file:
+        content = reduce(lambda x, y: x + y, md_file.readlines())
+    return content.decode('utf-8')
+
+
+@app.context_processor
+def inject_methoods():
+    return dict(read_md=read_md)
+
+
 if __name__ == '__main__':
     live_server = Server(app.wsgi_app)
     live_server.watch('**/*.*')
