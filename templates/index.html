@@ -2,18 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>吃了么,世界?</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='site.css') }}">
+    <title>{{ title }}</title>
+    {#    <link rel="stylesheet" href="{{ url_for('static',filename='site.css') }}">#}
 </head>
 <body>
-<h1>{{ title }}</h1>
-
-<nav>
-
-    <a href="{{ url_for('.services') }}">Services</a>
-    <a href="{{ url_for('.about') }}">About</a>
-</nav>
-{#<h2>动态加载</h2>#}
-
+{{ title|safe }}
+{{ body|md|safe }}
 </body>
 </html>
