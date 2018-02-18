@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html',
-                           title="<h1>你好,吃了么</h1>",
+                           title="<h1>hello world</h1>",
                            body="## Header2")
 
 
