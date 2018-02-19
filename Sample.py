@@ -6,6 +6,8 @@ from werkzeug.utils import secure_filename
 from flask_script import Manager
 from os import path
 
+from flask_bootstrap import Bootstrap
+
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -21,6 +23,7 @@ class RegexConverter(BaseConverter):
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
 manager = Manager(app)
+Bootstrap(app)
 
 
 @app.route('/')
