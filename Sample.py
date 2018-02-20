@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
 Bootstrap(app)
 nav = Nav()
-app.config.from_pyfile('config')
+app.config.from_pyfile('config')  # CSRF配置文件
 manager = Manager(app)
 
 nav.register_element('top', Navbar(u'Flask入门',
@@ -63,22 +63,6 @@ def is_current_link(link):
     return link == request.path
 
 
-# @app.route('/')
-# def hello_world():
-#     # return 'Hello World!'
-#     return render_template('index.html', title='Sample Blog')
-
-
-# @app.route('/user/<int:user_id>')
-# def user(user_id):
-#     '''
-#     动态路由演示
-#     :param username:
-#     :return:
-#     '''
-#     return 'User %s' % user_id
-
-
 @app.route('/user/<regex("[a-zA-Z]{3}"):user_id>/')
 def user(user_id):
     return 'User %s' % user_id
@@ -109,7 +93,7 @@ def projects():
 def login():
     from forms import LoginForm
     form = LoginForm()
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', title=u'登录', form=form)
 
 
 @app.route('/upload/', methods=['GET', 'POST'])
