@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, redirect, url_for, make_response, abort
-from werkzeug.routing import BaseConverter
-from werkzeug.utils import secure_filename
-from flask_script import Manager
 from os import path
 
+from flask import Flask, render_template, redirect, make_response, flash
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
+from flask_script import Manager
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.routing import BaseConverter
+from werkzeug.utils import secure_filename
 
 
 class RegexConverter(BaseConverter):
@@ -22,20 +23,33 @@ class RegexConverter(BaseConverter):
         self.regex = items[0]
 
 
-app = Flask(__name__)
-app.url_map.converters['regex'] = RegexConverter
-Bootstrap(app)
+basedir = path.abspath(path.dirname(__file__))
+
+db = SQLAlchemy()
+bootstrap = Bootstrap()
 nav = Nav()
-app.config.from_pyfile('config')  # CSRF配置文件
-manager = Manager(app)
+# manager = Manager(app) # 管理员
 
-nav.register_element('top', Navbar(u'Flask入门',
-                                   View(u'主页', 'index'),
-                                   View(u'关于', 'about'),
-                                   View(u'服务', 'services'),
-                                   View(u'项目', 'projects')))
 
-nav.init_app(app)
+def create_app():
+    app = Flask(__name__)
+    app.url_map.converters['regex'] = RegexConverter
+    app.config.from_pyfile('config')  # CSRF配置文件
+    # 数据库关联
+    app.config['SQLALCHEMY_DATABASE_URI'] = \
+        'sqlite:////' + path.join(basedir, 'data.sqlite')
+    app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+    nav.register_element('top', Navbar(u'Flask入门',
+                                       View(u'主页', 'index'),
+                                       View(u'关于', 'about'),
+                                       View(u'服务', 'services'),
+                                       View(u'项目', 'projects')))
+    db.init_app(app)
+    bootstrap.init_app(app)
+    nav.init_app(app)
+
+    return app
 
 
 @app.route('/')
@@ -91,8 +105,9 @@ def projects():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    from forms import LoginForm
+    from app.forms import LoginForm
     form = LoginForm()
+    flash(u'登录成功!')
     return render_template('login.html', title=u'登录', form=form)
 
 
@@ -108,8 +123,23 @@ def upload():
     return render_template('upload.html')
 
 
-if __name__ == '__main__':
-    # app.debug = True
-    # app.run(debug=True)
-    # manager.run()
-    dev()
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=True)
+    users = db.relationship('User', backref='roles')  # 指向当前的表
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=True)
+    password = db.Column(db.String, nullable=True)
+    role_id = db.Column(db.String, db.ForeignKey('roles.id'))  # 指向roles.id
+
+
+# if __name__ == '__main__':
+#     # app.debug = True
+#     # app.run(debug=True)
+#     # manager.run()
+#     dev()
