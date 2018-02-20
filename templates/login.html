@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>FLASK LOGIN</title>
-</head>
-<body>
-<h1>HTTP 方法:{{ methood }}</h1>
-<form method="post">
-    <div>
-        <input type="text"
-               name="username"
-               placeholder="User name"/>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+            <h1>{{ self.title() }}</h1>
+        </div>
     </div>
-    <div>
-        <input type="password"
-               name="password"
-               placeholder="Password"/>
+
+    <div class="container">
+        <form method="post">
+            {{ form.username.label }}
+            {{ form.username() }}
+            {{ form.password.label }}
+            {{ form.password() }}
+            {{ form.submit() }}
+        </form>
     </div>
-    <input type="submit">
-</form>
-</body>
-</html>
+{% endblock %}

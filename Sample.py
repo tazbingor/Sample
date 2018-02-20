@@ -26,6 +26,7 @@ app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
 Bootstrap(app)
 nav = Nav()
+app.config.from_pyfile('config')
 manager = Manager(app)
 
 nav.register_element('top', Navbar(u'Flask入门',
@@ -106,13 +107,9 @@ def projects():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-    else:
-        username = request.args['username']
-
-    return render_template('login.html', method=request.method)
+    from forms import LoginForm
+    form = LoginForm()
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route('/upload/', methods=['GET', 'POST'])
