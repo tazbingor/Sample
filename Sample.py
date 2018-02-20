@@ -7,6 +7,8 @@ from flask_script import Manager
 from os import path
 
 from flask_bootstrap import Bootstrap
+from flask_nav import Nav
+from flask_nav.elements import *
 
 
 class RegexConverter(BaseConverter):
@@ -22,8 +24,17 @@ class RegexConverter(BaseConverter):
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
-manager = Manager(app)
 Bootstrap(app)
+nav = Nav()
+manager = Manager(app)
+
+nav.register_element('top', Navbar(u'Flask入门',
+                                   View(u'主页', 'index'),
+                                   View(u'关于', 'about'),
+                                   View(u'服务', 'services'),
+                                   View(u'项目', 'projects')))
+
+nav.init_app(app)
 
 
 @app.route('/')
