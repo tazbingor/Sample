@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import render_template, redirect, make_response, flash, request
+from flask import render_template, flash, request
 
 
 def init_views(app):
@@ -38,12 +38,12 @@ def init_views(app):
         '''
         return 'The project page'
 
-    @app.route('/login/', methods=['GET', 'POST'])
-    def login():
-        from app.forms import LoginForm
-        form = LoginForm()
-        flash(u'登录成功!')
-        return render_template('login.html', title=u'登录', form=form)
+    # @app.route('/login/', methods=['GET', 'POST'])
+    # def login():
+    #     from app.auth.forms import LoginForm
+    #     form = LoginForm()
+    #     flash(u'登录成功!')
+    #     return render_template('login.html', title=u'登录', form=form)
 
         # @app.route('/upload/', methods=['GET', 'POST'])
         # def upload():
