@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask_script import Manager
-from werkzeug.utils import secure_filename
 from app import create_app, db
+from flask_migrate import Migrate, MigrateCommand, upgrade
 
 app = create_app()
 manager = Manager(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 
 @manager.command
@@ -23,7 +25,9 @@ def test():
 
 @manager.command
 def deploy():
-    pass
+    from app.models import Role
+    upgrade()
+    Role.seed()
 
 # if __name__ == '__main__':
 #     # app.debug = True
