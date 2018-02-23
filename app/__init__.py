@@ -23,10 +23,9 @@ class RegexConverter(BaseConverter):
 
 
 basedir = path.abspath(path.dirname(__file__))
-db = SQLAlchemy()
 bootstrap = Bootstrap()
 nav = Nav()
-
+db = SQLAlchemy()
 
 # manager = Manager(app) # 管理员
 
