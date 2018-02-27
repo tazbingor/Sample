@@ -29,8 +29,6 @@ def deploy():
     upgrade()
     Role.seed()
 
-# if __name__ == '__main__':
-#     # app.debug = True
-#     # app.run(debug=True)
-#     # manager.run()
-#     dev()
+
+if __name__ == '__main__':
+    manager.run()
